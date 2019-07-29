@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Lab8_9
 {
@@ -6,20 +7,93 @@ namespace Lab8_9
     {
         static void Main(string[] args)
         {
-            string[,] studentInfo = new string[9, 3]
+            List<string> studentNames = new List<string>()
             {
-                { "Bill Smith", "New York", "Pizza" },
-                { "Bob Sauce", "Los Angeles", "Pulled Pork" },
-                { "Crumbelina Bumblebee", "Detroit"," Pollen" },
-                { "Smitty Jensen", "Boston", "Clam Chowder" },
-                { "Aja Milan", "Venice", "Scampi" },
-                { "Tallahassee Egerton", "Boise", "Chips" },
-                { "Felix Felt", "Omaha", "Eggs" },
-                { "Tootie Springsteen", "Columbus", "Slushies" },
-                { "Apple Graham", "Washington DC", "Oatmeal" }
+                "Ted",
+                "Bill",
+                "Sally",
+                "Jimbo",
+                "Molly"
             };
 
-            ReturnStudentInfo(studentInfo);
+            List<string> studentHometown = new List<string>()
+            {
+                "Detroit",
+                "New York",
+                "Los Angeles",
+                "Seattle",
+                "Dallas"
+            };
+
+            List<string> studentFavoriteFood = new List<string>()
+            {
+                "Pizza",
+                "Ice Cream",
+                "Candy",
+                "Nachos",
+                "Escargot"
+            };
+
+            List<string> studentFavoriteColor = new List<string>()
+            {
+                "Red",
+                "Blue",
+                "Yellow",
+                "Green",
+                "Black"
+            };
+
+            string action = PickAnAction(
+                "Would you like to see \"hometown\", see \"favorite food\", see \"favorite color\", or add a \"new student\"?",
+                "That is not a valid entry.");
+
+            if (action.Equals("favorite food"))
+            {
+                bool continuePrompt = true;
+                int student = PickAStudent(studentNames);
+                while(continuePrompt)
+                {
+                    Console.WriteLine($"{studentNames[student]}'s favorite food is {studentFavoriteFood[student]}.");
+                    continuePrompt = ValidateYesOrNo("Would you like to learn more? Enter \"yes\" or \"no\"", "That is not a valid entry.");
+                }
+            }
+            else if (action.Equals("hometown"))
+            {
+                bool continuePrompt = true;
+                int student = PickAStudent(studentNames);
+                while (continuePrompt)
+                {
+                    Console.WriteLine($"{studentNames[student]}'s hometown is {studentHometown[student]}.");
+                    continuePrompt = ValidateYesOrNo("Would you like to learn more? Enter \"yes\" or \"no\"", "That is not a valid entry.");
+                }
+            }
+            else if (action.Equals("favorite color"))
+            {
+                bool continuePrompt = true;
+                int student = PickAStudent(studentNames);
+                while (continuePrompt)
+                {
+                    Console.WriteLine($"{studentNames[student]}'s favorite color is {studentFavoriteColor[student]}.");
+                    continuePrompt = ValidateYesOrNo("Would you like to learn more? Enter \"yes\" or \"no\"", "That is not a valid entry.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Enter the student's name:");
+                studentNames.Add(Console.ReadLine());
+                Console.WriteLine("Enter the student's hometown:");
+                studentHometown.Add(Console.ReadLine());
+                Console.WriteLine("Enter the student's favorite food:");
+                studentFavoriteFood.Add(Console.ReadLine());
+                Console.WriteLine("Enter the student's favorite color:");
+                studentFavoriteColor.Add(Console.ReadLine());
+
+                Console.WriteLine("New student info:");
+                Console.WriteLine($"Name: {studentNames[studentNames.Count]}");
+                Console.WriteLine($"Hometown: {studentHometown[studentHometown.Count]}");
+                Console.WriteLine($"Favorite Food: {studentFavoriteFood[studentFavoriteFood.Count]}");
+                Console.WriteLine($"Favorite Color: {studentFavoriteColor[studentFavoriteColor.Count]}");
+            }
         }
 
         static int ValidateIntegerInput(string messageToUser, string errorMessage)
@@ -31,7 +105,7 @@ namespace Lab8_9
 
                 if (userInput)
                 {
-                    if(result > 0 && result < 10)
+                    if (result > 0 && result < 10)
                     {
                         return result - 1;
                     }
@@ -41,24 +115,7 @@ namespace Lab8_9
             }
         }
 
-        static string ValidateInfoSelection(string messageToUser, string errorMessage)
-        {
-            while (true)
-            {
-                Console.WriteLine(messageToUser);
-                string userInput = Console.ReadLine();
-                bool userValidation = (userInput.Equals("hometown") || userInput.Equals("favorite food"));
-
-                if (userValidation)
-                {
-                    return userInput;
-                }
-
-                Console.WriteLine(errorMessage);
-            }
-        }
-
-        static bool ValidateYesOrNo (string messageToUser, string errorMessage)
+        static bool ValidateYesOrNo(string messageToUser, string errorMessage)
         {
             while (true)
             {
@@ -80,40 +137,33 @@ namespace Lab8_9
             }
         }
 
-        static void ReturnStudentInfo(string[,] studentList)
+        static int PickAStudent(List<string> studentList)
         {
-            bool continuePrompt = true;
-            int infoIndex;
             int nameIndex = ValidateIntegerInput(
-                "What student would you like to learn about? Enter a number between 1-9:",
+                "What student would you like to learn about? Enter a number between 1-5:",
                 "That was not a valid choice.");
 
-            string studentName = studentList[nameIndex, 0];
+            return nameIndex;
+        }
 
-            Console.WriteLine($"That student is named {studentName}.");
-
-            while(continuePrompt)
+        static string PickAnAction(string userMessage, string errorMessage)
+        {
+            while (true)
             {
-                string infoSelection = ValidateInfoSelection(
-                "What would you like to learn about this student? Enter either \"favorite food\" or \"hometown\":",
-                "That was not a valid choice.");
+                string userInput = Console.ReadLine();
 
-                if (infoSelection.Equals("favorite food"))
+                if (userInput.Equals("favorite food") || userInput.Equals("hometown") || userInput.Equals("favorite color") || userInput.Equals("new student"))
                 {
-                    infoIndex = 2;
-                }
-                else
-                {
-                    infoIndex = 1;
+                    return userInput;
                 }
 
-                Console.WriteLine($"{studentName}'s {infoSelection} is {studentList[nameIndex, infoIndex]}.");
-
-                continuePrompt = ValidateYesOrNo(
-                        $"Would you like to learn more about {studentName}? Enter \"yes\" or \"no\".",
-                        "That was not a valid response.");
+                Console.WriteLine(errorMessage);
             }
+        }
 
+        static void AddInformation(List<string> listToAdd)
+        {
+            listToAdd.Add(Console.ReadLine());
         }
     }
 }
