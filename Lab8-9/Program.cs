@@ -50,9 +50,9 @@ namespace Lab8_9
             if (action.Equals("favorite food"))
             {
                 bool continuePrompt = true;
-                int student = PickAStudent(studentNames);
                 while(continuePrompt)
                 {
+                    int student = PickAStudent(studentNames);
                     Console.WriteLine($"{studentNames[student]}'s favorite food is {studentFavoriteFood[student]}.");
                     continuePrompt = ValidateYesOrNo("Would you like to learn more? Enter \"yes\" or \"no\"", "That is not a valid entry.");
                 }
@@ -60,9 +60,9 @@ namespace Lab8_9
             else if (action.Equals("hometown"))
             {
                 bool continuePrompt = true;
-                int student = PickAStudent(studentNames);
                 while (continuePrompt)
                 {
+                    int student = PickAStudent(studentNames);
                     Console.WriteLine($"{studentNames[student]}'s hometown is {studentHometown[student]}.");
                     continuePrompt = ValidateYesOrNo("Would you like to learn more? Enter \"yes\" or \"no\"", "That is not a valid entry.");
                 }
@@ -70,9 +70,9 @@ namespace Lab8_9
             else if (action.Equals("favorite color"))
             {
                 bool continuePrompt = true;
-                int student = PickAStudent(studentNames);
                 while (continuePrompt)
                 {
+                    int student = PickAStudent(studentNames);
                     Console.WriteLine($"{studentNames[student]}'s favorite color is {studentFavoriteColor[student]}.");
                     continuePrompt = ValidateYesOrNo("Would you like to learn more? Enter \"yes\" or \"no\"", "That is not a valid entry.");
                 }
@@ -89,10 +89,10 @@ namespace Lab8_9
                 studentFavoriteColor.Add(Console.ReadLine());
 
                 Console.WriteLine("New student info:");
-                Console.WriteLine($"Name: {studentNames[studentNames.Count]}");
-                Console.WriteLine($"Hometown: {studentHometown[studentHometown.Count]}");
-                Console.WriteLine($"Favorite Food: {studentFavoriteFood[studentFavoriteFood.Count]}");
-                Console.WriteLine($"Favorite Color: {studentFavoriteColor[studentFavoriteColor.Count]}");
+                Console.WriteLine($"Name: {studentNames[(studentNames.Count-1)]}");
+                Console.WriteLine($"Hometown: {studentHometown[(studentHometown.Count-1)]}");
+                Console.WriteLine($"Favorite Food: {studentFavoriteFood[(studentFavoriteFood.Count-1)]}");
+                Console.WriteLine($"Favorite Color: {studentFavoriteColor[(studentFavoriteColor.Count-1)]}");
             }
         }
 
@@ -105,7 +105,7 @@ namespace Lab8_9
 
                 if (userInput)
                 {
-                    if (result > 0 && result < 10)
+                    if (result > 0 && result < 6)
                     {
                         return result - 1;
                     }
@@ -150,6 +150,7 @@ namespace Lab8_9
         {
             while (true)
             {
+                Console.WriteLine(userMessage);
                 string userInput = Console.ReadLine();
 
                 if (userInput.Equals("favorite food") || userInput.Equals("hometown") || userInput.Equals("favorite color") || userInput.Equals("new student"))
@@ -159,11 +160,6 @@ namespace Lab8_9
 
                 Console.WriteLine(errorMessage);
             }
-        }
-
-        static void AddInformation(List<string> listToAdd)
-        {
-            listToAdd.Add(Console.ReadLine());
         }
     }
 }
